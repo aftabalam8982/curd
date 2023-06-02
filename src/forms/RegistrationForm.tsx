@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { formValues } from './App';
+import { formValues } from '../types/type';
 import {useDispatch} from 'react-redux'
-import { addData } from './slice/formSlice';
+import { addData } from '../slice/formSlice';
+import {useNavigate} from 'react-router-dom'
 
-interface RegistrationProps{
-   submitData:(formData:formValues)=>void
-    
-}
-const RegistrationForm = ({submitData}:RegistrationProps):JSX.Element => {
+
+const RegistrationForm = ():JSX.Element => {
     const [formData, setFormData] = useState<formValues>({
+        id:'',
         firstName: '',
         lastName: '',
         email: '',
@@ -16,7 +15,8 @@ const RegistrationForm = ({submitData}:RegistrationProps):JSX.Element => {
         experience: '',
         gender: '',
       });
-      const dispatch= useDispatch()
+      const dispatch= useDispatch();
+      const navigate = useNavigate()
       const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setFormData((prevFormData) => ({
@@ -28,8 +28,9 @@ const RegistrationForm = ({submitData}:RegistrationProps):JSX.Element => {
       const handleSubmit = (event:React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         dispatch(addData([formData]))
-        // submitData(formData)
+        navigate('/table')
         setFormData({
+            id:'',
             firstName: '',
             lastName: '',
             email: '',
@@ -37,7 +38,6 @@ const RegistrationForm = ({submitData}:RegistrationProps):JSX.Element => {
             experience: '',
             gender: '',
           })
-        // console.log(formData);
       };
     
   return (
@@ -159,10 +159,11 @@ const RegistrationForm = ({submitData}:RegistrationProps):JSX.Element => {
               Submit
             </button>
             <button
-              type="submit"
+              type="button"
               className=" mx-3 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none"
+              onClick={()=>navigate('/table')}
             >
-              Cancel
+              Go to list
             </button>
           </div>
         </form>

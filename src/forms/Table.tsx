@@ -1,22 +1,21 @@
-import React from 'react';
-import { formValues } from './App';
-// import { RootState } from './store/store';
-import {useSelector} from 'react-redux'
-import { formSelector } from './slice/formSlice';
+import {useSelector, useDispatch} from 'react-redux';
+import { formSelector } from '../slice/formSlice';
+import {useNavigate} from 'react-router-dom';
 
-interface TableProps{
-    formData:formValues[]
-}
 
-const Table = ({formData}:TableProps):JSX.Element => {
-  const datas = useSelector(formSelector)
+
+const Table = ():JSX.Element => {
+  const datas = useSelector(formSelector);
+  const navigate= useNavigate();
+  const dispatch = useDispatch()
     console.log(datas);
     
   return (
     <div className="container mx-5 my-2">
         <button
-              type="submit"
+              type="button"
               className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none"
+              onClick={()=>navigate('/')}
             >
               Back
             </button>
@@ -35,24 +34,27 @@ const Table = ({formData}:TableProps):JSX.Element => {
         </thead>
         <tbody>
           {
-            datas.value.map((data)=>{
+            datas.value.map((data, Id)=>{
+              const {firstName,lastName,email,education,experience,gender}=data
                 return(
-                    <tr >
-            <td className="py-2 px-4 border-b">{data.firstName}</td>
-            <td className="py-2 px-4 border-b">{data.lastName}</td>
-            <td className="py-2 px-4 border-b">{data.email}</td>
-            <td className="py-2 px-4 border-b">{data.education}</td>
-            <td className="py-2 px-4 border-b">{data.experience}</td>
-            <td className="py-2 px-4 border-b">{data.gender}</td>
+                    <tr key={Id}>
+            <td className="py-2 px-4 border-b">{firstName}</td>
+            <td className="py-2 px-4 border-b">{lastName}</td>
+            <td className="py-2 px-4 border-b">{email}</td>
+            <td className="py-2 px-4 border-b">{education}</td>
+            <td className="py-2 px-4 border-b">{experience}</td>
+            <td className="py-2 px-4 border-b">{gender}</td>
             <button
               type="submit"
               className="my-1 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none"
+
             >
               Edit
             </button>
             <button
-              type="submit"
+              type="button"
               className="mx-1 px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none"
+              // onClick={()=> dispatch()}
             >
               Delete
             </button>
